@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        body{
+            background-color:lightskyblue;
+        }
+        
+      
         /* Add CSS to style your packet, spring, and chocolates */
         .packet {
             width: 300px; /* Increase packet width */
@@ -17,7 +22,7 @@
     
         .spring {
             width: 100%;
-            background-color: #8B4513; /* Spring color */
+            background-color: black; /* Spring color */
             position: absolute;
             bottom: 0;
             z-index: 0; /* Place spring below chocolates */
@@ -26,35 +31,36 @@
     
         .chocolate-container {
             position: absolute;
-            bottom: 30px; /* Adjust as needed to place the first chocolate at the height of the spring */
+            bottom: 60px; /* Adjust as needed to place the first chocolate at the height of the spring */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1; /* Place chocolates above the spring */
         }
     
         .chocolate {
-            width: 30px;
+            width: 60px;
             height: 30px;
             background-color: #D2691E; /* Chocolate color */
             color: white; /* Set text color to white */
             font-weight: bold;
             font-size: 16px;
-            border-radius: 50%;
+            border: 2px solid black; /* Add a black border with 2px thickness */
             margin: 0 5px; /* Add some space between chocolates */
             display: flex;
             justify-content: center;
             align-items: center;
         }
-    
+        
 
-
+       
     </style>
     
-    
-    <title>Stack Program</title>
+    <title>Chocolate Packet</title>
 </head>
-<body>
-    <h1>Stack Program</h1>
+<body >
+   
+
+   
     <div class="stack-container">
         <div class="packet" id="packet">
             <div class="spring" id="spring"></div>
@@ -62,63 +68,62 @@
                 <!-- Stack elements will be added here dynamically -->
             </div>
         </div>
-        <div class="message-container" id="message-container" style="position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);font-size:40px;">
+        <div class="message-container" id="message-container" style="position: absolute; top: 26%; left: 50%; transform: translate(-50%, -50%); font-size: 40px;color:red;">
             {% if message %}
                 <p class="message">{{ message }}</p>
             {% endif %}
         </div>
-        
     </div>
-   
 
     <!-- Push button with a form -->
-    <form  action="/push/" method="post">
+    <form action="/push/" method="post">
         {% csrf_token %}
-        <button type="submit"style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%);font-size:20px;">Push</button>
+        <button type="submit" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 20px;">Push</button>
     </form>
 
     <!-- Pop button with a form -->
-    <form  action="/pop/" method="post">
+    <form action="/pop/" method="post">
         {% csrf_token %}
-        <button type="submit"style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);font-size:20px;">Pop</button>
+        <button type="submit" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20px;">Pop</button>
     </form>
 
     <!-- Top button with a form -->
     <form action="/top/" method="get">
-        <button type="submit"style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);font-size:20px;">Top</button>
+        <button type="submit" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); font-size: 20px;">Top</button>
     </form>
 
     <!-- Is Empty button with a form -->
     <form action="/is_empty/" method="get">
-        <button type="submit"style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);font-size:20px;">Is Empty</button>
+        <button type="submit" style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%); font-size: 20px;">Is Empty</button>
     </form>
     <!-- Length button with a form -->
     <form action="/length/" method="get">
-        <button type="submit"style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);font-size:20px;">Length</button>
+        <button type="submit" style="position: absolute; top: 80%; left: 50%; transform: translate(-50%, -50%); font-size: 20px;">Length</button>
     </form>
+
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const chocolateContainer = document.getElementById('stack-elements');
-        const spring = document.querySelector('.spring');
-        const stackLength = document.getElementById('stack-length');
-    
-        // Initialize the spring's height to its maximum
-        let springHeight = 80;
-        spring.style.height = springHeight + 'px';
-    
-        // Retrieve the stack elements from the template context
-        const stackElements = JSON.parse('{{ stack_elements|safe }}'); // Assuming elements are passed as JSON
-    
-        // Reverse the order of elements to display the first element at the bottom
-        stackElements.reverse();
-    
-        // Initial setup: create chocolates based on the initial stack length and elements
-        updateStackVisualization(stackElements);
-    
-        function updateStackVisualization(elements) {
-            // Clear the existing chocolates
+        document.addEventListener('DOMContentLoaded', function () {
+            const chocolateContainer = document.getElementById('stack-elements');
+            const spring = document.querySelector('.spring');
+            const stackLength = document.getElementById('stack-length');
+        
+            // Initialize the spring's height to its maximum
+            let springHeight = 110;
+            spring.style.height = springHeight + 'px';
+        
+            // Retrieve the stack elements from the template context
+            const stackElements = JSON.parse('{{ stack_elements|safe }}'); // Assuming elements are passed as JSON
+        
+            // Reverse the order of elements to display the first element at the bottom
+            stackElements.reverse();
+        
+            // Initial setup: create chocolates based on the initial stack length and elements
+            updateStackVisualization(stackElements);
+        
+            function updateStackVisualization(elements) {
+                   // Clear the existing chocolates
             chocolateContainer.innerHTML = '';
-    
+            
             // Create chocolates based on the stack elements
             for (let i = 0; i < elements.length; i++) {
                 const chocolate = document.createElement('div');
@@ -126,21 +131,22 @@
                 chocolate.textContent = elements[i]; // Assign elements to chocolates
                 chocolateContainer.appendChild(chocolate);
             }
-    
-            // Calculate the spring's height based on the number of chocolates
-            springHeight = Math.max(10, 80 - (elements.length * 10));
-            spring.style.height = springHeight + 'px';
-    
-            // Calculate the height of the bottom chocolate relative to the spring
-            const bottomChocolate = document.querySelector('.chocolate:first-child');
-            const bottomChocolateHeight = springHeight - 10; // Adjust as needed
-            bottomChocolate.style.bottom = bottomChocolateHeight + 'px';
-        }
-    });
-</script>
-    
-    
-    
-    
-    
-</body
+
+            // Calculate the position of the .chocolate-container
+            const initialPosition = 100; // Initial position for the first chocolate
+            const decrement = 10; // Decrease by 10px for each additional chocolate
+            const newPosition = initialPosition - (elements.length - 1) * decrement;
+
+            // Update the .chocolate-container's position
+            document.querySelector('.chocolate-container').style.bottom = newPosition + 'px';
+                    
+                        // Calculate the spring's height based on the number of chocolates
+                        springHeight = Math.max(10, 110 - (elements.length * 10));
+                        spring.style.height = springHeight + 'px';
+                    }
+                    
+                });
+    </script>
+</body>
+</html>
+

@@ -19,13 +19,13 @@ def index(request):
 def push(request):
     random_number = random.randint(1, 100)
     stack.push(random_number)
-    request.session['message'] = "Pushed item: " + str(random_number)  # Set the message in the session
+    request.session['message'] = "Pushed an element: " + str(random_number)  # Set the message in the session
     return redirect('index')  # Redirect to the index view
 
 def pop(request):
     if not stack.is_empty():
         stack.pop()
-        request.session['message'] = "Popped item"  # Set the message in the session
+        request.session['message'] = "Popped an element"  # Set the message in the session
         return redirect('index')  
     else:
         request.session['message'] = "The stack is empty"  # Set the message in the session
